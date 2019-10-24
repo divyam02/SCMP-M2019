@@ -71,16 +71,16 @@ for i in range(2, 13):
 	H = gen_hilbert_matrix(i)
 	Q = classical_gram_schmidt(np.copy(H), i)
 	# Classical
-	x1[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x1[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
 	# Classical applied twice
 	Q = classical_gram_schmidt(Q.T, i)
-	x3[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x3[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
 	# Modified
 	Q = modified_gram_schmidt(np.copy(H), i)
-	x2[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x2[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
 	# House-Holder
 	Q = house_holder_method(np.copy(H))
-	x4[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x4[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
 
 plt.figure(figsize=(20, 10))
 plt.plot(range(2, 13), x1[0], label='Classical Gram-Schmidt')

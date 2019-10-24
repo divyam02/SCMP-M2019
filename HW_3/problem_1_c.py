@@ -3,6 +3,7 @@ from numpy.linalg import norm
 from numpy.linalg import solve
 from numpy.linalg import qr
 from numpy.linalg import inv
+from numpy.linalg import cholesky
 import matplotlib.pyplot as plt
 
 def gen_hilbert_matrix(n):
@@ -19,22 +20,29 @@ def gen_hilbert_matrix(n):
 
 	return temp
 
-def cholesky_factorization(H, n):
+def cholesky_factorization(H, n): 
 	A = np.copy(np.dot(H, H.T))
-	print(A)
+	# print(A)
 	for j in range(n):
 		for k in range(j):
 			for i in range(j, n):
-				A[j, i] = A[j, i] - A[k, i]*A[k, j]
+				# print(A[i, j], A[i, k], A[j, k])
+				A[i, j] = A[i, j] - A[i, k]*A[j, k]
+
+		# print(A[j, j])
 		A[j, j] = np.sqrt(A[j, j])
 		for k in range(j+1, n):
-			A[j, k] = A[k, j]/A[j, j]
+			A[k, j] = A[k, j]/A[j, j]
 
-	L = np.copy(A)
+	print(np.dot(H, H.T))
 
-	print(np.dot(L.T, L))
-
-	return np.dot(H, inv(L))
+	L = cholesky(np.dot(H, H.T))
+	Q = np.dot(H, inv(L.T))
+	# print(A)	
+	# print(Q)
+	# print(np.dot(Q.T, Q))
+	# input('continue?')
+	return Q
 
 def house_holder_method(H):
 	Q, R = qr(H)
@@ -90,19 +98,25 @@ for i in range(2, 13):
 	H = gen_hilbert_matrix(i)
 	Q = classical_gram_schmidt(np.copy(H), i)
 	# Classical
-	x1[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x1[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
 	# Classical applied twice
 	Q = classical_gram_schmidt(Q.T, i)
-	x3[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x3[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
 	# Modified
 	Q = modified_gram_schmidt(np.copy(H), i)
-	x2[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x2[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
 	# House-Holder
 	Q = house_holder_method(np.copy(H))
-	x4[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	x4[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
+	
 	# Cholesky Factorization
-	Q = cholesky_factorization(np.copy(H), i)
-	x5[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q)))/np.log(10))
+	# For some reasons, np.dot(H.T, H) is not positive definite after n=8 the
+	# actual implementation also suggests this; I start getting NaN values.
+	try:
+		Q = cholesky_factorization(np.copy(H), i)
+		x5[0, i-2] = -1*(np.log(norm(identity_matrix - np.dot(Q.T, Q), 2))/np.log(10))
+	except:
+		print("exception!:", i)
 
 plt.figure(figsize=(20, 10))
 plt.plot(range(2, 13), x1[0], label='Classical Gram-Schmidt')
