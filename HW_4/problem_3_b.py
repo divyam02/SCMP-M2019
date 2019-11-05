@@ -15,12 +15,17 @@ for i in range(100):
 
 			converge_steps+=1
 		except:
-			print(converge_steps)
+			# print(converge_steps)
 			break
 
-print('Calculated Eigenvalue:', mu)
-print('Calculated Eigenvector:', x.T[0])
-v, w = eigh(A)
-print('Actual Eigenvalue:', v[0])
-print('Actual Eigenvector:', w[:,0].T)
+# print('Calculated Eigenvalue:', mu)
+# print('Calculated Eigenvector:', x.T[0])
+# v, w = eigh(A)
+# print('Actual Eigenvalue:', v[1])
+# print('Actual Eigenvector:', w[:,1].T)
 print('Average convergence rate of Eigenvalue with arbitrary starting vectors:', converge_steps/100)
+
+#########################################################################
+#							Observations								#
+#########################################################################	
+# Average convergence rate of Eigenvalue with arbitrary starting vectors: 90.51

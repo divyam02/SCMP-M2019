@@ -24,3 +24,11 @@ print('Calculated Eigenvector:', x.T[0])
 v, w = eigh(A)
 print('Actual Eigenvalue:', v[0])
 print('Actual Eigenvector:', w[:,0].T)
+
+#########################################################################
+#							Observations								#
+#########################################################################
+# Calculated Eigenvalue: 0.57893339
+# Calculated Eigenvector: -0.0431682  -0.35073145  0.9354806 
+# Actual Eigenvalue: 0.5789333856910526
+# Actual Eigenvector: -0.0431682  -0.35073145  0.9354806 

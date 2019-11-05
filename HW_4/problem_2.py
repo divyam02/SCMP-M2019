@@ -19,3 +19,12 @@ print('Calculated Eigenvector:', x.T[0])
 v, w = eigh(A)
 print('Actual Eigenvalue:', v[1])
 print('Actual Eigenvector:', w[:,1])
+#########################################################################
+#							Observations								#
+#########################################################################
+# Calculated Eigenvalue: 2.133074475348525
+# Calculated Eigenvector: -0.49742503  0.8195891   0.28432735
+# Actual Eigenvalue: 2.1330744753485256
+# Actual Eigenvector: -0.49742503  0.8195891   0.28432735
+# 
+# We calculate 1/|lambda| and the negative eigenvector is not considered.
